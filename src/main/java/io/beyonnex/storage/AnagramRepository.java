@@ -15,8 +15,6 @@ public class AnagramRepository {
 
     private final List<Set<AnagramCheckingText>> anagramsList = new ArrayList<>();
 
-    public AnagramRepository() {}
-
     public List<Set<AnagramCheckingText>> getAnagramsList() {
         return anagramsList;
     }

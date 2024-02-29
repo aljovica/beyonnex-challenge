@@ -5,9 +5,7 @@ import java.text.Normalizer;
 import java.util.Map;
 
 import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.*;
 
 public record AnagramCheckingText(String content) {
     public static AnagramCheckingText of(String content) {
@@ -29,10 +27,7 @@ public record AnagramCheckingText(String content) {
 
     private String cleanText(String text) {
         return removeAccents(text)
-                .chars()
-                .filter(Character::isLetterOrDigit)
-                .mapToObj(letter -> String.valueOf((char) letter))
-                .collect(joining())
+                .replaceAll("[^a-zA-Z0-9]+", "")
                 .toLowerCase();
     }
 

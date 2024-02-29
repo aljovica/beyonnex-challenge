@@ -10,11 +10,10 @@ public class FeatureOneService {
         this.anagramRepository = anagramRepository;
     }
     public boolean execute(String firstTextString, String secondTextString) {
-        var firstText = AnagramCheckingText.of(firstTextString);
-        var isAnagram = firstText.isAnagram(secondTextString);
+        var isAnagram = AnagramCheckingText.of(firstTextString).isAnagram(secondTextString);
 
         if (isAnagram) {
-            anagramRepository.store(firstText.content());
+            anagramRepository.store(firstTextString);
             anagramRepository.store(secondTextString);
         }
 

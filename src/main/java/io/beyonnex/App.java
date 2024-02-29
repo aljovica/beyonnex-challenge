@@ -27,11 +27,11 @@ public class App {
         String inputCommand = scanner.nextLine().toLowerCase();
 
         switch (CommandParser.parse(inputCommand)) {
-            case F1Command command -> out.println(featureOneService.execute(command.firstText(), command.secondText()));
-            case F2Command command -> out.println(featureTwoService.execute(command.text()));
-            case HelpCommand ignore -> getHelpMessage();
-            case UnknownCommand command -> out.println(command.errorMessage());
-            case ExitCommand ignore -> {
+            case F1Command(String firstText, String secondText) -> out.println(featureOneService.execute(firstText, secondText));
+            case F2Command(String text) -> out.println(featureTwoService.execute(text));
+            case HelpCommand() -> getHelpMessage();
+            case UnknownCommand(String errorMessage) -> out.println(errorMessage);
+            case ExitCommand() -> {
                 out.println("Exiting the application. Goodbye!");
                 return;
             }
