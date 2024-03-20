@@ -21,7 +21,7 @@ public class FeatureOneServiceTest {
         assertThat(featureOneService.execute("xyz", "zxy")).isTrue();
         assertThat(featureOneService.execute("fgh", "gfh")).isTrue();
 
-        assertThat(anagramRepository.getAnagramsList()).containsExactlyInAnyOrder(
+        assertThat(anagramRepository.getAnagrams()).containsExactlyInAnyOrder(
                 Set.of(AnagramCheckingText.of("abc"), AnagramCheckingText.of("cba")),
                 Set.of(AnagramCheckingText.of("xyz"), AnagramCheckingText.of("zxy")),
                 Set.of(AnagramCheckingText.of("fgh"), AnagramCheckingText.of("gfh"))
@@ -34,6 +34,6 @@ public class FeatureOneServiceTest {
         assertThat(featureOneService.execute("xyz", "zyk")).isFalse();
         assertThat(featureOneService.execute("fgh", "ffh")).isFalse();
 
-        assertThat(anagramRepository.getAnagramsList()).isEmpty();
+        assertThat(anagramRepository.getAnagrams()).isEmpty();
     }
 }

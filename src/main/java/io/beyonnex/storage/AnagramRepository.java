@@ -2,44 +2,46 @@ package io.beyonnex.storage;
 
 import io.beyonnex.model.AnagramCheckingText;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import static com.google.common.collect.Sets.difference;
-import static com.google.common.collect.Sets.union;
-import static java.util.stream.Collectors.toSet;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AnagramRepository {
 
-    private final List<Set<AnagramCheckingText>> anagramsList = new ArrayList<>();
+    private final Map<String, Set<AnagramCheckingText>> anagramsMap = new ConcurrentHashMap<>();
 
-    public List<Set<AnagramCheckingText>> getAnagramsList() {
-        return anagramsList;
+    public List<Set<AnagramCheckingText>> getAnagrams() {
+        return new ArrayList<>(anagramsMap.values());
     }
 
     public Set<AnagramCheckingText> findAnagrams(String content) {
         AnagramCheckingText text = AnagramCheckingText.of(content);
-        return difference(find(text), Set.of(text));
+        Set<AnagramCheckingText> found = new HashSet<>(find(text));
+        found.removeAll(Set.of(text));
+        return found;
     }
 
     private Set<AnagramCheckingText> find(AnagramCheckingText text) {
-        return anagramsList.stream()
-                .filter(anagramSet -> anagramSet.stream().allMatch(anagram -> text.isAnagram(anagram.content())))
-                .flatMap(Collection::stream)
-                .collect(toSet());
+        String sortedText = sortCharacters(text.content());
+        return anagramsMap.getOrDefault(sortedText, Collections.emptySet());
     }
 
-    public void store(String content) {
+    public synchronized void store(String content) {
         var text = AnagramCheckingText.of(content);
+        var sortedText = sortCharacters(text.content());
         var matchedAnagrams = find(text);
 
         if (matchedAnagrams.isEmpty()) {
-            anagramsList.add(Set.of(text));
+            Set<AnagramCheckingText> newSet = new HashSet<>();
+            newSet.add(text);
+            anagramsMap.put(sortedText, newSet);
         } else {
-            int matchedAnagramIndex = anagramsList.indexOf(matchedAnagrams);
-            anagramsList.set(matchedAnagramIndex, union(matchedAnagrams, Set.of(text)));
+            matchedAnagrams.add(text);
         }
+    }
+
+    private String sortCharacters(String text) {
+        char[] chars = text.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
     }
 }

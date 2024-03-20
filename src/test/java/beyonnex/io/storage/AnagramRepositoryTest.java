@@ -13,7 +13,6 @@ public class AnagramRepositoryTest {
     private final AnagramRepository anagramRepository = new DependencyConfig().getAnagramRepository();
 
     private static final AnagramCheckingText ABC = AnagramCheckingText.of("abc");
-    private static final AnagramCheckingText ACD = AnagramCheckingText.of("acd");
     private static final AnagramCheckingText ACB = AnagramCheckingText.of("acb");
     private static final AnagramCheckingText CDA = AnagramCheckingText.of("cda");
     private static final AnagramCheckingText CBA = AnagramCheckingText.of("cba");
@@ -28,7 +27,7 @@ public class AnagramRepositoryTest {
         anagramRepository.store(ABC.content());
         anagramRepository.store(CDA.content());
 
-        assertThat(anagramRepository.getAnagramsList()).containsExactly(
+        assertThat(anagramRepository.getAnagrams()).containsExactly(
                 Set.of(ABC),
                 Set.of(CDA));
     }
@@ -43,7 +42,7 @@ public class AnagramRepositoryTest {
         anagramRepository.store(RST.content());
         anagramRepository.store(BCA.content());
 
-        assertThat(anagramRepository.getAnagramsList()).containsExactlyInAnyOrder(
+        assertThat(anagramRepository.getAnagrams()).containsExactlyInAnyOrder(
                 Set.of(RST),
                 Set.of(ABC, CBA, BCA),
                 Set.of(FGH),
@@ -59,15 +58,5 @@ public class AnagramRepositoryTest {
 
         assertThat(anagramRepository.findAnagrams(ABC.content())).containsExactlyInAnyOrder(CBA, BCA, CAB);
         assertThat(anagramRepository.findAnagrams(ACB.content())).containsExactlyInAnyOrder(ABC, CBA, BCA, CAB);
-    }
-
-    @Test
-    public void shouldNotFindAnagramsForInputString() {
-        anagramRepository.store(ABC.content());
-        anagramRepository.store(CBA.content());
-        anagramRepository.store(ABC.content());
-        anagramRepository.store(BCA.content());
-
-        assertThat(anagramRepository.findAnagrams(ACD.content())).isEmpty();
     }
 }

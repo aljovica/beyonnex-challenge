@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AnagramCheckingTextTest {
-private static Stream<Arguments> anagramExamples() {
+    private static Stream<Arguments> anagramExamples() {
         return Stream.of(
-                Arguments.of("Anagrams",  "Ars magna"),
-                Arguments.of("New York Times",  "monkeys write"),
+                Arguments.of("Anagrams", "Ars magna"),
+                Arguments.of("New York Times", "monkeys write"),
                 Arguments.of("Church of Scientology", "rich-chosen goofy cult"),
                 Arguments.of("McDonald's restaurants", "Uncle Sam's standard rot"),
                 Arguments.of("coronavirus", "carnivorous"),
@@ -28,13 +28,13 @@ private static Stream<Arguments> anagramExamples() {
         return Stream.of(
                 Arguments.of("übä", "bäü"),
                 Arguments.of("übě", "bęü",
-                Arguments.of("ôâì", "iãǒ")
-        ));
+                        Arguments.of("ôâì", "iãǒ")
+                ));
     }
 
     private static Stream<Arguments> nonAnagramExamples() {
         return Stream.of(
-                Arguments.of("New York Times",  "monkeys write it"),
+                Arguments.of("New York Times", "monkeys write it"),
                 Arguments.of("Church of Scientology", "rich-chosen goofy cult is"),
                 Arguments.of("McDonald's restaurants", "Uncle Sam's standard rot is not"),
                 Arguments.of("a coronavirus", "carnivorous"),
